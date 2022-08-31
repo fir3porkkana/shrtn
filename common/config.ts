@@ -8,6 +8,7 @@ export interface ConfigType {
   server: {
     port: number
   }
+  environment: string
 }
 
 export const config: ConfigType = {
@@ -17,4 +18,5 @@ export const config: ConfigType = {
   server: {
     port: Number(process.env.PORT) || 3001,
   },
+  environment: process.env.NODE_ENV || 'development',
 }

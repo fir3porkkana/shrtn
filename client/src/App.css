@@ -1,0 +1,42 @@
+.App {
+  text-align: center;
+}
+
+.main-content {
+  padding: 40px;
+  padding-top: 30px;
+  padding-left: 40px;
+}
+
+.content {
+  padding: 40px;
+}
+
+.padded-row-item {
+  padding-left: 2ch;
+}
+
+.centered {
+  align-items: center;
+}
+
+.horizontal-stack {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.flex-item {
+  flex: 5;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}

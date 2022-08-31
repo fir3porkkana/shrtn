@@ -1,5 +1,6 @@
 import express from 'express'
 import cors from 'cors'
+import url from 'url'
 import bodyParser from 'body-parser'
 import { nanoid } from 'nanoid'
 import { Link } from './models/link'
@@ -8,8 +9,9 @@ export const expressApp = express()
 
 expressApp.use(cors())
 expressApp.use(bodyParser.json())
+expressApp.use(express.static('build'))
 
-expressApp.get('/hello', (req, res) => {
+expressApp.get('/api/hello', (req, res) => {
   const greetings = [
     'hello',
     'hi',
@@ -42,7 +44,7 @@ expressApp.get('/:shortId', async (req, res) => {
   }
 })
 
-expressApp.get('/stats/:shortId', async (req, res) => {
+expressApp.get('/api/linkstats/:shortId', async (req, res) => {
   try {
     const queriedLink = await Link.findOne({ shortId: req.params.shortId }).exec()
 
@@ -51,15 +53,26 @@ expressApp.get('/stats/:shortId', async (req, res) => {
     }
 
     console.log(`succesfully retrieved ${queriedLink.shortId}`)
+    const shortUrl = url.format({
+      protocol: req.protocol,
+      host: req.get('host'),
+      pathname: queriedLink.shortId,
+    })
+    const responseJson = {
+      shortUrl,
+      shortId: queriedLink.shortId,
+      originalLink: queriedLink.originalLink,
+      clickCount: queriedLink.clickCount,
+    }
     res.status(200)
-    res.json(queriedLink)
+    res.json(responseJson)
   } catch (error) {
     console.log(`error getting original link: ${error}`)
     res.status(500)
   }
 })
 
-expressApp.post('/links', async (req, res) => {
+expressApp.post('/api/links', async (req, res) => {
   try {
     const { body } = req
 
